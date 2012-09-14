@@ -1,17 +1,26 @@
-(function (win, doc) {
+/**
+ * Emulate mouseEnter / mouseLeave for webkit.
+ */
+(function (win, doc, exports) {
+
+    'use strict';
+
     /**
      * Emulate mouse enter and leave.
      * @constructor
      * @param {Elemenet} el A target element.
      * @param {string} eventName Watching event name.
      * @param {Function} callback The callback.
+     * @example
+     *   var evt  = new EmulateLeaveEnter(el, 'enter', function (e) {...});
+     *   var evt2 = new EmulateLeaveEnter(el, 'leave', function (e) {...});
      */
     function EmulateLeaveEnter(el, eventName, callback) {
         this.init.apply(this, arguments);
     }
 
     EmulateLeaveEnter.prototype = {
-
+        
         /**
          * Initialize
          * @param {Elemenet} el A target element.
@@ -19,11 +28,10 @@
          * @param {Function} callback The callback.
          */
         init: function (el, eventName, callback) {
-
+        
             this.el_ = el;
             this.eventName_ = eventName;
             this.callback_ = callback;
-            this.inFlg_ = false;
 
             this.setOver_();
             this.setOut_();
@@ -34,13 +42,13 @@
                 el = this.el_;
 
             el.addEventListener('mouseover', function (e) {
-                var desendants = [].slice.call(el.querySelectorAll('*'));
 
-                if (self.inFlg_) {
-                    return true;
+                var desendants = [].slice.call(el.querySelectorAll('*')),
+                    related = e.relatedTarget || e.fromElement;
+
+                if (desendants.indexOf(related) === -1 && related !== el) {
+                    self.onEnter_(e);
                 }
-
-                self.onEnter_(e);
             }, false);
 
         },
@@ -72,7 +80,6 @@
          * @param {Event} e Event object.
          */
         onLeave_: function (e) {
-            this.inFlg_ = false;
             this.fire_('leave', e);
         },
 
@@ -80,7 +87,6 @@
          * @param {Event} e Event object.
          */
         onEnter_: function (e) {
-            this.inFlg_ = true;
             this.fire_('enter', e);
         },
 
@@ -106,4 +112,5 @@
         }
     };
     EmulateLeaveEnter.prototype.constructor = EmulateLeaveEnter;
-}(window, document));
+
+}(window, document, window));
