@@ -102,11 +102,7 @@
          * @return {boolean} return true if eventName_ is type.
          */
         checkType_: function (type) {
-            if (this.eventName_ === type) {
-                return true;
-            }
-
-            return false;
+            return this.eventName_ === type;
         }
     };
     EmulateLeaveEnter.prototype.constructor = EmulateLeaveEnter;
