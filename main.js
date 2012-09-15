@@ -10,4 +10,7 @@
         alert('Leave!');
     });
 
+    el.addEventListener('mouseover', evt.doOver.bind(evt), false);
+    el.addEventListener('mouseout', evt2.doOut.bind(evt2), false);
+
 }(window, document));
