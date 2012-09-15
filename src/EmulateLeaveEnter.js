@@ -42,44 +42,43 @@
 
             this[methodType[eventName]]();
         },
-        setOver_: function () {
+        getDesendants_: function (el) {
+            return [].slice.call(el.querySelectorAll('*'));
+        },
+        doOver: function (e) {
 
-            var self = this,
-                el = this.el_;
+            var el = this.el_,
+                desendants = this.getDesendants_(el),
+                related = e.relatedTarget || e.fromElement;
 
-            el.addEventListener('mouseover', function (e) {
+            if (desendants.indexOf(related) === -1 && related !== el) {
+                this.onEnter_(e);
+            }
+        },
+        doOut: function (e) {
 
-                var desendants = [].slice.call(el.querySelectorAll('*')),
-                    related = e.relatedTarget || e.fromElement;
+            var el = this.el_,
+                desendants = this.getDesendants_(el),
+                par = el.parentNode,
+                related = e.relatedTarget || e.toElement;
 
-                if (desendants.indexOf(related) === -1 && related !== el) {
-                    self.onEnter_(e);
+            while (par) {
+                if (par === related) {
+                    this.onLeave_(e);
+                    return true;
                 }
-            }, false);
+                par = par.parentNode;
+            }
 
+            if (related !== el && desendants.indexOf(related) === -1) {
+                this.onLeave_(e);
+            }
+        },
+        setOver_: function () {
+            this.el_.addEventListener('mouseover', this.doOver.bind(this), false);
         },
         setOut_: function () {
-
-            var self = this,
-                el = this.el_;
-
-            el.addEventListener('mouseout', function (e) {
-
-                var desendants = [].slice.call(el.querySelectorAll('*')),
-                    par = el.parentNode;
-
-                while (par) {
-                    if (par === e.relatedTarget) {
-                        self.onLeave_(e);
-                        return true;
-                    }
-                    par = par.parentNode;
-                }
-
-                if (e.relatedTarget !== el && desendants.indexOf(e.relatedTarget) === -1) {
-                    self.onLeave_(e);
-                }
-            }, false);
+            this.el_.addEventListener('mouseout', this.doOut.bind(this), false);
         },
 
         /**
