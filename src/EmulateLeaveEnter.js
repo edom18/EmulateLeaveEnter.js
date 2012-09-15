@@ -29,12 +29,18 @@
          */
         init: function (el, eventName, callback) {
         
+            eventName = eventName.toLowerCase();
+
+            var methodType = {
+                    'enter': 'setOver_',
+                    'leave': 'setOut_'
+                };
+
             this.el_ = el;
             this.eventName_ = eventName;
             this.callback_ = callback;
 
-            this.setOver_();
-            this.setOut_();
+            this[methodType[eventName]]();
         },
         setOver_: function () {
 
