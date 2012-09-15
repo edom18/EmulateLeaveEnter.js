@@ -113,4 +113,9 @@
     };
     EmulateLeaveEnter.prototype.constructor = EmulateLeaveEnter;
 
+    /*! -----------------------------------------
+        EXPORTS
+    --------------------------------------------- */
+    exports.EmulateLeaveEnter = EmulateLeaveEnter;
+
 }(window, document, window));

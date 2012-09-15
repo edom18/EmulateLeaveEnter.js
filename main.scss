@@ -1,0 +1,48 @@
+/* #! scss */
+
+#status {
+    width: 10px;
+    height: 10px;
+    margin-top: 10px;
+    background: green;
+    
+    &.error {
+        background: red;
+    }
+}
+
+#container {
+    width: 50%;
+    padding: 10px;
+    background: red;
+
+    #target {
+        position: relative;
+        width: 180%;
+        padding: 20px;
+        background: blue;
+
+        #inner {
+            padding: 10px;
+            background: gray;
+        }
+        #inner2 {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 50px;
+            height: 150px;
+            background: yellow;
+        }
+    }
+}
+
+#ene {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    width: 100px;
+    height: 100px;
+    background: gray;
+}
+
