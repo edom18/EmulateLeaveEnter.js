@@ -11,11 +11,12 @@
      * @param {Elemenet} el A target element.
      * @param {string} eventName Watching event name.
      * @param {Function} callback The callback.
+     * @param {Object=} attr The attribute.
      * @example
      *   var evt  = new EmulateLeaveEnter(el, 'enter', function (e) {...});
      *   var evt2 = new EmulateLeaveEnter(el, 'leave', function (e) {...});
      */
-    function EmulateLeaveEnter(el, eventName, callback) {
+    function EmulateLeaveEnter(el, eventName, callback, attr) {
         this.init.apply(this, arguments);
     }
 
@@ -27,9 +28,10 @@
          * @param {string} eventName Watching event name.
          * @param {Function} callback The callback.
          */
-        init: function (el, eventName, callback) {
+        init: function (el, eventName, callback, attr) {
         
             eventName = eventName.toLowerCase();
+            attr || (attr = {});
 
             var methodType = {
                     'enter': 'setOver_',
@@ -40,7 +42,9 @@
             this.eventName_ = eventName;
             this.callback_ = callback;
 
-            this[methodType[eventName]]();
+            if (attr.auto) {
+                this[methodType[eventName]]();
+            }
         },
         getDesendants_: function (el) {
             return [].slice.call(el.querySelectorAll('*'));
